@@ -29,7 +29,7 @@ steps=1
 # Step Height
 h=0.2
 # Step distance
-d=1
+d=0.6
 # Floor height
 h_floor=0.3
 
@@ -52,12 +52,17 @@ pwx=0
 pwy=0
 pwz=2.0
 
+# identity in rotation matrix give the same rotation of fix repair
+
+
 #attention with time domain
 def spline(x, x0, h, d, h_floor):
-    #z = -4*h/d**2*(x-x0)**2+4*h/d*(x-x0) + h_floor
+    z = -4*h/d**2*(-x+x0)**2+4*h/d*(-x+x0) + h_floor
+    print(f'x={x}, x0={x0}, h={h}, d={d}, h_floor={h_floor}, z={z}')
+    if z <= h_floor:
+        z=h_floor
     #if (x-x0) >= d:
     #    return h_floor
-    z=h_floor
     return z
 
 
@@ -77,13 +82,12 @@ for i in range(it):
     robot.display(IK.q)
     time.sleep(dt)
 
-#movement of left Foot
-foot_ref = pflx
-print(foot_ref)
+#Movement of left Foot in d
+foot_ref_l = pflx
 for i in range(it):
     # Feet reference
     pflx += vflx*dt
-    pflz = spline(pflx, foot_ref, h, d, h_floor)
+    pflz = spline(pflx, foot_ref_l, h, d, h_floor)
     IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
     IK.leftFootRefPose.rotation = np.identity(3)
     IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
@@ -97,18 +101,59 @@ for i in range(it):
     robot.display(IK.q)
     time.sleep(dt)
 
+#Move right and left feet in 2d
 for k in range(steps):
     #movement of left Foot
     #foot_ref = pflx
     #print(foot_ref)
-
+    foot_ref_r = pfrx
     #movement of right Foot
-    for j in range(it):
+    for j in range(it*2):
         # Feet reference
         pfrx += vfrx*dt
+        pfrz = spline(pfrx, foot_ref_r, h, d*2, h_floor)
         IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
         IK.leftFootRefPose.rotation = np.identity(3)
         IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
+        IK.rightFootRefPose.rotation = np.identity(3)
+        # Waist reference
+        pwx += vwx*dt
+        pwy += 1*vwy*dt
+        IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
+        
+        IK.q = IK.solve(IK.q)
+        robot.display(IK.q)
+        time.sleep(dt)
+    
+    foot_ref_l = pflx
+    #movement of left Foot
+    for i in range(it*2):
+        # Feet reference
+        pflx += vflx*dt
+        pflz = spline(pflx, foot_ref_l, h, d*2, h_floor)
+        IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
+        IK.leftFootRefPose.rotation = np.identity(3)
+        IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
+        IK.rightFootRefPose.rotation = np.identity(3)
+        # Waist reference
+        pwx += vwx*dt
+        pwy -= 1*vwy*dt
+        IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
+        
+        IK.q = IK.solve(IK.q)
+        robot.display(IK.q)
+        time.sleep(dt)
+
+
+#Align feet (Movement of right Foot in d)
+foot_ref_r = pfrx
+for i in range(it):
+        # Feet reference
+        pfrx += vfrx*dt
+        pfrz = spline(pfrx, foot_ref_r, h, d, h_floor)
+        IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
+        IK.leftFootRefPose.rotation = np.identity(3)
+        IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
         IK.rightFootRefPose.rotation = np.identity(3)
         # Waist reference
         pwx += vwx*dt
@@ -118,57 +163,6 @@ for k in range(steps):
         IK.q = IK.solve(IK.q)
         robot.display(IK.q)
         time.sleep(dt)
-    
-    for i in range(it):
-        # Feet reference
-        pflx += vflx*dt
-        pflz = spline(pflx, pfly, h, d, h_floor)
-        IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
-        IK.leftFootRefPose.rotation = np.identity(3)
-        IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
-        IK.rightFootRefPose.rotation = np.identity(3)
-        # Waist reference
-        pwx += vwx*dt
-        pwy -= 2*vwy*dt
-        IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
-        
-        IK.q = IK.solve(IK.q)
-        robot.display(IK.q)
-        time.sleep(dt)
-
-# Last step
-for i in range(it):
-        # Feet reference
-        pflx += vflx*dt
-        IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
-        IK.leftFootRefPose.rotation = np.identity(3)
-        IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
-        IK.rightFootRefPose.rotation = np.identity(3)
-        # Waist reference
-        pwx += vwx*dt
-        pwy -= 2*vwy*dt
-        IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
-        
-        IK.q = IK.solve(IK.q)
-        robot.display(IK.q)
-        time.sleep(dt)
-
-#Align feet
-for i in range(it):
-    # Feet reference
-    pfrx += vfrx*dt
-    IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
-    IK.leftFootRefPose.rotation = np.identity(3)
-    IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
-    IK.rightFootRefPose.rotation = np.identity(3)
-    # Waist reference
-    pwx += vwx*dt
-    pwy += 2*vwy*dt
-    IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
-    
-    IK.q = IK.solve(IK.q)
-    robot.display(IK.q)
-    time.sleep(dt)
 
 #Return waist
 for i in range(it):
@@ -184,5 +178,3 @@ for i in range(it):
     IK.q = IK.solve(IK.q)
     robot.display(IK.q)
     time.sleep(dt)
-# identity in rotation matrix give the same rotation of fix repair
-
