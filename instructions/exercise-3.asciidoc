@@ -1,0 +1,23 @@
+Walk motion
+===========
+
+Objective
+---------
+Compute a walk motion for the biped robot.
+
+Exercise 3
+----------
+Define trajectories for both feet and for the center of mass of the robot in
+such a way that
+
+* the robot performs at least two steps,
+* when the robot is in single support, the center of mass is above the support
+  foot,
+* when the robot is in double contact, the center of mass is above the line
+  segment linking the two foot centers.
+
+We assume that the center of mass is at the origin of the trunc.
+
+Trajectories will be represented by polynomial splines. The coefficients of the splines are unknown. They are computed by solving a linear system of equations obtained by expressing the boundary constraints of the trajectories.
+
+image::figures/walk-trajectory.svg[width="100%",alt="walk trajectories"]

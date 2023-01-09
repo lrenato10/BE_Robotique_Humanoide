@@ -1,0 +1,43 @@
+Computing inverse kinematics
+============================
+
+Objective
+---------
+Compute a configuration such that the trunk, left and right feet are in a
+desired position given as input.
+
+To do so, you will use numerical optimization
+
+Numerical optimization
+----------------------
+File +example_scipy.py+ provides some basic examples of optimization problems
+and solvers. In those example, the solver +fmin_bfgs+ takes as input
+
+* a cost function +cost+,
+* an initial guess +x0+ (initial value of the optimization variable),
+* a callback function, instance of +CallbackLogger+,
+
+and computes a value of the optimization variable that minimizes the cost
+function under the constraints.
+
+Exercise 2
+----------
+
+Implement a class called +InverseKinematics+ that takes at construction
+
+* a robot,
+
+with members
+
+* +leftFootRefPose+ the pose of the left foot,
+* +rightFootRefPose+ the pose of the right foot,
+* +waistRefPose+ the pose of the waist.
+
+with methods
+
+* +cost+ that takes as input a configuration vector and that returns a real
+  valued cost,
+* +solve+ that takes as input an initial configuration and that returns
+  a configuration minimizing the pose error.
+
+write your code in file +inverse_kinematics.py+.

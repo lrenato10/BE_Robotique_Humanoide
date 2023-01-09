@@ -1,0 +1,86 @@
+Building a kinematics chain
+===========================
+
+Objective
+---------
+Build a biped robot by assembling joints and links
+
+Displaying objects
+------------------
+Open a python terminal and go to the project directory.
+By typing CTRL+SHIFT+T in the terminal, you can open another terminal in the
+same window.
+
+In the first terminal, type
+[source,sh]
+----
+source config.sh
+gepetto-gui
+----
+A window opens that we call the viewer.
+
+In the second terminal, type
+[source,python]
+----
+source config.sh
+python -i example_display.py
+----
+
+You should see three objects in the viewer: a sphere, a box and a cylinder.
+
+Look at the code in files
+
+* +display.py+,
+* +example_display.py+
+
+Building a kinematic chain
+--------------------------
+
+In the first terminal, type
+[source,sh]
+----
+gepetto-gui
+----
+
+In the second terminal, type
+[source,python]
+----
+python -i example_robot.py
+----
+
+You should see a kinematic chain moving with constant joint velocity
+
+Look at the code in files
+
+* +robot_arm.py+,
+* +example_robot.py+
+
+Exercise 1.1
+------------
+
+image::biped-robot.png[width="15%",alt="biped robot"]
+
+Build a kinematic chain composed of a trunc and two legs with six degrees of
+freedom each. Each leg will be composed of the following joints
+
+* a rotation joint around z axis (hip),
+* a rotation joint around y axis (hip),
+* a rotation joint around x axis (hip),
+
+* a rotation joint around y axis  (knee),
+
+* a rotation joint around y axis (ankle),
+* a rotation joint around x axis (ankle).
+
+Write your code in file +legged_robot.py+.
+
+Exercise 1.2
+------------
+
+Append your kinematic chain to 3 prismatic joints
+
+* a prismatic joint along x,
+* a prismatic joint along y,
+* a prismatic joint along z.
+
+Use +JointModelPX+,+JointModelPY+,+JointModelPZ+ from module +pinocchio+.

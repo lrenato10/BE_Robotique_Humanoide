@@ -1,0 +1,23 @@
+INSTALLATION INSTRUCTIONS
+
+Robotpkg
+
+sudo apt-get install cmake cmake-curses-gui cmake-qt-gui curl doxygen g++ ipython libassimp-dev assimp-utils libboost-dev omniidl-python omniorb omniorb-idl omniorb-nameserver python python-matplotlib python-numpy python-scipy python2.7 qgit libbz2-dev zlib1g-dev libssl-dev pax tar libeigen3-dev libtinyxml-dev liburdfdom-dev libboost-all-dev libpcre3-dev libopenscenegraph-dev libqt4-dev python-qt4-dev libomniorb4-dev libqt4-opengl-dev python-omniorb python-scipy
+
+git clone https://git.openrobots.org/robots/robotpkg.git
+cd robotpkg
+git clone git://git.openrobots.org/robots/robotpkg/robotpkg-wip wip
+export INSTALL_PREFIX=/usr/local/insa/openrobots
+./bootstrap/bootstrap --prefix=$INSTALL_PREFIX
+cd math/pinocchio; make install
+cd graphics/collada-dom; make install
+cd wip/osg-dae; make install
+cd graphics/gepetto-viewer-corba; make install
+
+Anaconda
+
+  - dependencies:
+    - pinocchio,
+    - gepetto-viewer-corba,
+    - numpy, scipy,
+    - matplotlib
