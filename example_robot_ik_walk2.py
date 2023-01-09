@@ -75,7 +75,8 @@ for i in range(it):
     IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
     IK.rightFootRefPose.rotation = np.identity(3)
     # Waist reference
-    pwy += vwy*dt
+    pwy -= vwy*dt
+    pwx += 0.4*vwx*dt
     IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
     
     IK.q = IK.solve(IK.q)
@@ -93,19 +94,30 @@ for i in range(it):
     IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
     IK.rightFootRefPose.rotation = np.identity(3)
     # Waist reference
-    pwx += vwx*dt
-    pwy -= 2*vwy*dt
+    #pwx += vwx*dt
+    #pwy -= 2*vwy*dt
     IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
-    
+    IK.q = IK.solve(IK.q)
+    robot.display(IK.q)
+    time.sleep(dt)
+for i in range(it):
+    # Feet reference
+    pflz = spline(pflx, foot_ref_l, h, d, h_floor)
+    IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
+    IK.leftFootRefPose.rotation = np.identity(3)
+    IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
+    IK.rightFootRefPose.rotation = np.identity(3)
+    # Waist reference
+    pwx += 2*vwx*dt
+    pwy += 1*vwy*dt
+    IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
     IK.q = IK.solve(IK.q)
     robot.display(IK.q)
     time.sleep(dt)
 
+
 #Move right and left feet in 2d
 for k in range(steps):
-    #movement of left Foot
-    #foot_ref = pflx
-    #print(foot_ref)
     foot_ref_r = pfrx
     #movement of right Foot
     for j in range(it*2):
@@ -117,10 +129,24 @@ for k in range(steps):
         IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
         IK.rightFootRefPose.rotation = np.identity(3)
         # Waist reference
-        pwx += vwx*dt
-        pwy += 1*vwy*dt
+        #pwx += vwx*dt
+        #pwy += 1*vwy*dt
         IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
-        
+        IK.q = IK.solve(IK.q)
+        robot.display(IK.q)
+        time.sleep(dt)
+    for j in range(it*2):
+        # Feet reference
+        #pfrx += vfrx*dt
+        pfrz = spline(pfrx, foot_ref_r, h, d*2, h_floor)
+        IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
+        IK.leftFootRefPose.rotation = np.identity(3)
+        IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
+        IK.rightFootRefPose.rotation = np.identity(3)
+        # Waist reference
+        pwx += vwx*dt
+        pwy -= 1*vwy*dt
+        IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
         IK.q = IK.solve(IK.q)
         robot.display(IK.q)
         time.sleep(dt)
@@ -136,8 +162,24 @@ for k in range(steps):
         IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
         IK.rightFootRefPose.rotation = np.identity(3)
         # Waist reference
+        #pwx += vwx*dt
+        #pwy -= 1*vwy*dt
+        IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
+        
+        IK.q = IK.solve(IK.q)
+        robot.display(IK.q)
+        time.sleep(dt)
+    for i in range(it*2):
+        # Feet reference
+        #pflx += vflx*dt
+        pflz = spline(pflx, foot_ref_l, h, d*2, h_floor)
+        IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
+        IK.leftFootRefPose.rotation = np.identity(3)
+        IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
+        IK.rightFootRefPose.rotation = np.identity(3)
+        # Waist reference
         pwx += vwx*dt
-        pwy -= 1*vwy*dt
+        pwy += 1*vwy*dt
         IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
         
         IK.q = IK.solve(IK.q)
@@ -156,10 +198,24 @@ for i in range(it):
         IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
         IK.rightFootRefPose.rotation = np.identity(3)
         # Waist reference
-        pwx += vwx*dt
-        pwy += 2*vwy*dt
+        #pwx += vwx*dt
+        #pwy -= 2*vwy*dt
         IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
-        
+        IK.q = IK.solve(IK.q)
+        robot.display(IK.q)
+        time.sleep(dt)
+for i in range(it):
+        # Feet reference
+        #pfrx += vfrx*dt
+        #pfrz = spline(pfrx, foot_ref_r, h, d, h_floor)
+        IK.leftFootRefPose.translation = np.array([pflx, pfly, pflz])
+        IK.leftFootRefPose.rotation = np.identity(3)
+        IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
+        IK.rightFootRefPose.rotation = np.identity(3)
+        # Waist reference
+        #pwx += vwx*dt
+        pwy -= 2*vwy*dt
+        IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
         IK.q = IK.solve(IK.q)
         robot.display(IK.q)
         time.sleep(dt)
@@ -172,7 +228,7 @@ for i in range(it):
     IK.rightFootRefPose.translation = np.array([pfrx, pfry, pfrz])
     IK.rightFootRefPose.rotation = np.identity(3)
     # Waist reference
-    pwy -= vwy*dt
+    pwy += vwy*dt
     IK.waistRefPose.translation = np.array([pwx, pwy, pwz])
     
     IK.q = IK.solve(IK.q)
