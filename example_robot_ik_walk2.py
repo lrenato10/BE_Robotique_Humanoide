@@ -27,11 +27,11 @@ it=100
 steps=1
 
 # Step Height
-#h=0.2
-h=0.4
+h=0.1
+#h=0.6
 # Step distance
-d=0.6
-#d=0.7
+d=0.3
+#d=0.75
 # Waist distance
 dw=2
 
@@ -40,7 +40,7 @@ h_floor=0.3
 
 #speed
 vwx=-(d/2)/(it*dt)
-vwy=(d/2)/(it*dt)
+vwy=(0.5/2)/(it*dt)
 vflx=-d/(it*dt)
 vfrx=-d/(it*dt)
 vflz=-d/(it*dt)
