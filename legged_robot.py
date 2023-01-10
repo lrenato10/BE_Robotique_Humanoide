@@ -54,6 +54,7 @@ class Robot:
 
     def createLeggedRobot (self,rootId=0, prefix='', jointPlacement=SE3.Identity()):
         color   = [red,green,blue,transparency] = [1,1,0.78,1.0]
+        color_blue   = [red,green,blue,transparency] = [0.0,0.0, 1.0,1.0]
         colorred = [1.0,0.0,0.0,1.0]
 
         #jointId = rootId
@@ -80,6 +81,8 @@ class Robot:
         #self.visuals.append( Visual('world/' + prefix + 'bowl_j',self.jointId[jointName],SE3.Identity()) )
         self.viewer.viewer.gui.addBox('world/' + prefix + 'bowl', 0.3, 1, 0.3,color)
         self.visuals.append( Visual('world/' + prefix + 'bowl',self.jointId[jointName],SE3(eye(3),np.array([0., 0., 0]))))
+        self.viewer.viewer.gui.addBox('world/' + prefix + 'CG', 0.1, 0.1, 0.2,color_blue)
+        self.visuals.append( Visual('world/' + prefix + 'CG',self.jointId[jointName],SE3(eye(3),np.array([0., 0., -2.1]))))
 
         #Left joints
         prefix="left_"
@@ -131,7 +134,7 @@ class Robot:
         self.model.appendBodyToJoint(self.jointId[jointName],Inertia.Random(),SE3.Identity())
         self.viewer.viewer.gui.addSphere('world/' + prefix + 'ankle', 0.3,colorred)
         self.visuals.append( Visual('world/' + prefix + 'ankle',self.jointId[jointName],SE3.Identity()) )
-        self.viewer.viewer.gui.addBox('world/' + prefix + 'foot', 1, 0.3,0.15,color)
+        self.viewer.viewer.gui.addBox('world/' + prefix + 'foot', 1, 0.3,0.10,color)
         self.visuals.append( Visual('world/' + prefix + 'foot',self.jointId[jointName],SE3(eye(3),np.array([-0.3, 0., -0.25]))))
 
         #Right joints
@@ -185,7 +188,7 @@ class Robot:
         self.model.appendBodyToJoint(self.jointId[jointName],Inertia.Random(),SE3.Identity())
         self.viewer.viewer.gui.addSphere('world/' + prefix + 'ankle', 0.3,colorred)
         self.visuals.append( Visual('world/' + prefix + 'ankle',self.jointId[jointName],SE3.Identity()) )
-        self.viewer.viewer.gui.addBox('world/' + prefix + 'foot', 1, 0.3,0.15,color)
+        self.viewer.viewer.gui.addBox('world/' + prefix + 'foot', 1, 0.3,0.10,color)
         self.visuals.append( Visual('world/' + prefix + 'foot',self.jointId[jointName],SE3(eye(3),np.array([-0.3, 0., -0.25]))))
 
     def display(self,q):
